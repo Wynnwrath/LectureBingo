@@ -12,7 +12,6 @@ const STORAGE_KEY = 'bingo_state_v1';
 export const useBingo = (initialPhrases) => {
   
   const [grid, setGrid] = useState(() => {
-    // A. Check LocalStorage first
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
@@ -76,7 +75,7 @@ export const useBingo = (initialPhrases) => {
   const shuffleGrid = () => {
     addToLog("Shuffling Board...");
     
-    // Extract user texts 
+    // Extract 
     const currentTexts = grid
       .filter((_, i) => i !== FREE_SPACE_IDX)
       .map(c => c.text);
