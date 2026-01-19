@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@keyframes rise {
+  0% {
+    bottom: -100px;
+    transform: translateX(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(20px);
+  }
+  100% {
+    bottom: 110vh;
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+}
+
+/* Apply the animation */
+.animate-rise {
+  animation: rise infinite linear;
+}
