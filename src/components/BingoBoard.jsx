@@ -110,7 +110,9 @@ const BingoBoard = () => {
                     placeholder="Type here..."
                   />
                 ) : (
-                  <span>{cell.text}</span>
+                    <span className="text-[10px] md:text-sm font-bold leading-tight overflow-hidden px-1 break-words">
+                    {cell.text}
+                    </span>
                 )}
 
                 {cell.checked && !isCenter && (

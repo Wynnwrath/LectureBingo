@@ -28,7 +28,7 @@ export const useBingo = (initialPhrases) => {
 
     const fullGrid = [
       ...texts.slice(0, 12),
-      "FREE SPACE",
+      "❄️",
       ...texts.slice(12, 24)
     ];
 
@@ -90,7 +90,7 @@ export const useBingo = (initialPhrases) => {
     // Rebuild Grid 
     const newGrid = grid.map((cell, i) => {
       if (i < 12) return { ...cell, text: currentTexts[i], checked: false };
-      if (i === 12) return { ...cell, text: "FREE SPACE", checked: true };
+      if (i === 12) return { ...cell, text: "❄️", checked: true };
       if (i > 12) return { ...cell, text: currentTexts[i - 1], checked: false };
       return cell;
     });
