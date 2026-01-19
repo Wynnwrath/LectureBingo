@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const WIN_LINES = [
   [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24],
@@ -7,17 +7,28 @@ const WIN_LINES = [
 ];
 
 const FREE_SPACE_IDX = 12;
+const STORAGE_KEY = 'bingo_state_v1'; 
 
 export const useBingo = (initialPhrases) => {
   
   const [grid, setGrid] = useState(() => {
+    // A. Check LocalStorage first
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to parse save", e);
+      }
+    }
+
     let texts = [...initialPhrases];
     while(texts.length < 24) texts.push("");
-    texts = texts.slice(0, 24);  
+    texts = texts.slice(0, 24); 
 
     const fullGrid = [
       ...texts.slice(0, 12),
-      "❄️",
+      "FREE SPACE",
       ...texts.slice(12, 24)
     ];
 
@@ -31,11 +42,13 @@ export const useBingo = (initialPhrases) => {
   const [isWon, setIsWon] = useState(false);
   const [gameLog, setGameLog] = useState(["> SYSTEM READY"]);
 
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(grid));
+  }, [grid]);
+
   const addToLog = (msg) => {
     setGameLog(prev => [`> ${msg}`, ...prev].slice(0, 3)); 
   };
-
-  // --- ACTIONS ---
 
   const updateCellText = (index, newText) => {
     if (index === FREE_SPACE_IDX) return; 
@@ -62,16 +75,19 @@ export const useBingo = (initialPhrases) => {
 
   const shuffleGrid = () => {
     addToLog("Shuffling Board...");
-
+    
+    // Extract user texts 
     const currentTexts = grid
       .filter((_, i) => i !== FREE_SPACE_IDX)
       .map(c => c.text);
-
+    
+    // Shuffle
     for (let i = currentTexts.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [currentTexts[i], currentTexts[j]] = [currentTexts[j], currentTexts[i]];
     }
 
+    // Rebuild Grid 
     const newGrid = grid.map((cell, i) => {
       if (i < 12) return { ...cell, text: currentTexts[i], checked: false };
       if (i === 12) return { ...cell, text: "FREE SPACE", checked: true };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useBingo } from '../hooks/useBingo';
 
+// default phrases for the bingo board
 const DEFAULT_PHRASES = [
   "Professor is late", "Mic Issues", "Forgot Recording", 
   "Screen Freeze", "Unmuted Accident", "Slide Typo",
